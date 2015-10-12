@@ -8,8 +8,9 @@ public:
     List(int length = DEFAULT_LIST_SIZE);
     ~List();
     void append(int value);
-    int operator[](int index);
+    int &operator[](int index);
     void merge(List &source);
+    void remove(int index, int counts=1);
     int getCount();
     void sort(bool asc=true);
 private:

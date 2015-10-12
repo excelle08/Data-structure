@@ -18,15 +18,25 @@ void List::append(int value){
     index ++;
 }
 
-int List::operator[](int index){
-    if(index >= length){
-        return 0;
+int &List::operator[](int index){
+    if(index >= this->index){
+        return data[this->index];
     }
     return data[index];
 }
 
 int List::getCount(){
     return index;
+}
+
+void List::remove(int index, int counts){
+    for(int i=index+counts; i<length; i++){
+        data[i-counts] = data[i];
+    }
+    this->index -= counts;
+    for(int i=this->index; i<length; i++){
+        data[i] = 0;
+    }
 }
 
 void List::merge(List &source){

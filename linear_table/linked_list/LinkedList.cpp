@@ -25,6 +25,7 @@ void LinkedList::append(int value) {
     _prev = _current;
 }
 
+// Insert: T(n)=O(n)
 void LinkedList::insert(int position, int value){
     struct _Node * item = new struct _Node;
     _current = _head;
@@ -95,6 +96,7 @@ int LinkedList::getNext() {
     return _current->next->value;
 }
 
+// Search: T(n)=O(n)
 int LinkedList::operator[](int position) {
     _current = _head;
     int i;
