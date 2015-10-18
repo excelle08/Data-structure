@@ -1,19 +1,23 @@
 #ifndef HASH_H
 #define HASH_H
 
+// Preset value
+#define CRC_SEED 0xFFFF
+// This represents the standard polynomial of CRC16 - x16+x15+x2+1
+#define POLY16 0x1021
+
+typedef unsigned short int_16;
 
 class Hash
 {
 public:
-    Hash(char *data);
+    Hash(const char *data, int length);
     virtual ~Hash();
-    unsigned char * crc16();
-    char * hexDigest();
-    char * base64Encode();
+    int_16 crc16();
 
 private:
     char * data;
-    unsigned char * result;
+    int length;
 };
 
 #endif // HASH_H

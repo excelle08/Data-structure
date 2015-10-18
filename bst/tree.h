@@ -39,7 +39,7 @@ public:
 
     bool deleteNode(T key) {
         struct treeNode<T> *node = _root;
-        bool searchState = _search(_root, key, nullptr, node);
+        bool searchState = _search(_root, key, nullptr, &node);
         return searchState ? _deleteCurrent(node) : false;
     }
 

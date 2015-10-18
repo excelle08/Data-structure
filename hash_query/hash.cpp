@@ -15,24 +15,33 @@ CRC-32c             x32+x28+x27+...+x8+x6+1 1EDC6F41    SCTP
 #include <cstring>
 #include "hash.h"
 
-Hash::Hash(char *data) {
-    strcpy(this->data, data);
-    this->result = new unsigned char[128];
+Hash::Hash(const char *data, int length) {
+    this->data = new char [length];
+    for(int i=0; i<length; i++) {
+        this->data[i] = (data[i]);
+    }
+    this->length = length;
 }
 
 Hash::~Hash() {
-    delete [] data;
-    delete [] result;
-}
-
-unsigned char *crc16() {
 
 }
 
-char *hexDigest() {
+int_16 Hash::crc16() {
+    int_16 shift = CRC_SEED;
+    int_16 data = 0, val = 0;
 
-}
+    for(int i=0; i<length; i++) {
+        for(int j=0; j<8; j++) {
+            val = ((this->data[i] << j) & 0x80) ^ ((shift & 0x8000) >> 8);
 
-char *base64Encode() {
+            shift <<= 1;
 
+            if(val != 0) {
+                shift ^= 0x1021;
+            }
+        }
+    }
+
+    return shift;
 }
