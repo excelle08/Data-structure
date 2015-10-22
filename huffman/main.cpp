@@ -1,5 +1,6 @@
 #include <iostream>
 #include <bitset>
+#include <fstream>
 #include "HuffmanTree.h"
 
 using namespace std;
@@ -10,8 +11,26 @@ int main(int argc, char const *argv[])
 {
     string str;
     vector<FrequencyListElement> freqList;
-    cout << "Enter a string to analyze huffman tree:" << endl;
-    getline(cin, str);
+
+    // Parse CLI args
+    if(argc != 3) {
+        cout << "Usage: " << argv[0] << "[-s <string>] | [-f <file>]" << endl;
+        return 0;
+    } else {
+        if(!strcmp(argv[1], "-s")) {
+            str = argv[2];
+        } else if(!strcmp(argv[1], "-f")) {
+            ifstream fp(argv[2]);
+            if(!fp) {
+                cout << "Error opening the file - " << argv[2] << endl;
+                return 1;
+            }
+            while(!fp.eof()) {
+                str.push_back(fp.get());
+            }
+            fp.close();
+        }
+    }
 
     // Analyze
     int str_size = str.size();
@@ -35,7 +54,7 @@ int main(int argc, char const *argv[])
     // Print the frequency table
     cout << "Char\tASCII\tFrequency" << endl;
     for(int i=0; i<freqList.size(); i++){
-        cout << freqList[i].key << "\t" << (int)freqList[i].key << "\t" << freqList[i].frequency << endl; 
+        cout << ((freqList[i].key>=32 && freqList[i].key <= 127)?freqList[i].key:'*') << "\t" << (int)freqList[i].key << "\t" << freqList[i].frequency << endl; 
     }
     cout << "===========================" << endl;
     // Start building Huffman tree and get result table
@@ -46,7 +65,7 @@ int main(int argc, char const *argv[])
 
     cout << "Char\tASCII\tHuffman Code" << endl;
     for(int i=0; i<dict.size(); i++) {
-        cout << dict[i].key << "\t" << (int)dict[i].key << "\t" << bitset<32>(dict[i].code) << " = " << dict[i].code << endl;
+        cout << ((dict[i].key>=32 && dict[i].key <= 127)?dict[i].key:'*') << "\t" << (int)dict[i].key << "\t" << bitset<32>(dict[i].code) << " = " << dict[i].code << endl;
     }
     return 0;
 }
