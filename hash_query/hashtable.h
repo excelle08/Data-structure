@@ -4,8 +4,7 @@
 #include "hash.h"
 #include "LinkedList.h"
 
-#include <sstream>
-#include <string>
+#include <cstring>
 
 template <class KeyType, class DataType>
 struct HashElement{
@@ -23,11 +22,12 @@ public:
     virtual ~HashTable();
     void insert(KeyType key, DataType data);
     DataType get(KeyType key);
+    bool remove(KeyType key);
 
 private:
     LinkedList<HashElement<KeyType, DataType> > *hTable;
     int_16 __getHashCode(KeyType key);
-    const std::string __convertKey(KeyType key);
+    const char * __convertKey(KeyType key);
 };
 
 
@@ -48,7 +48,7 @@ void HashTable<KeyType, DataType>::insert(KeyType key, DataType data) {
     element.key = key;
     element.data = data;
     int_16 addr = __getHashCode(key);
-    std::cout << std::endl << "Addr=" <<  addr << std::endl;
+    std::cout << std::endl << "Addr=" <<  addr << std::endl << std::endl;
     hTable[addr].append(element);
 }
 
@@ -73,19 +73,38 @@ DataType HashTable<KeyType, DataType>::get(KeyType key) {
     return empty;
 }
 
+template <class KeyType, class DataType>
+bool HashTable<KeyType, DataType>::remove(KeyType key) {
+    int_16 addr = __getHashCode(key);
+    LinkedList<struct HashElement<KeyType, DataType> > elementList = hTable[addr];
+
+    if(elementList.isEmpty()) {
+        return false;
+    }
+
+    for(int i=0; i<elementList.length(); i++) {
+        if(elementList[i].key == key) {
+            elementList.remove(i);
+            return true;
+        }
+    }
+    return false;
+}
+
 using namespace std;
 template <class KeyType, class DataType>
 int_16 HashTable<KeyType, DataType>::__getHashCode(KeyType key) {
-    string keyStr = __convertKey(key);
-    Hash hashObj(keyStr.c_str(), keyStr.length());
+    const char * keyStr = __convertKey(key);
+    Hash hashObj(keyStr, sizeof(key));
     return hashObj.crc16();
 }
 
 template <class KeyType, class DataType>
-const std::string HashTable<KeyType, DataType>::__convertKey(KeyType key) {
-    ostringstream oss;
-    oss << key;
-    return oss.str();
+const char * HashTable<KeyType, DataType>::__convertKey(KeyType key) {
+    size_t keySize = sizeof(key);
+    char *keyStr = new char[keySize];
+    memcpy(keyStr, &key, keySize);
+    return keyStr;
 }
 
 #endif // HASHTABLE_CPP

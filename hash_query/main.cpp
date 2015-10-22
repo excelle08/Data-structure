@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include "hashtable.h"
 
 using namespace std;
@@ -12,10 +13,10 @@ int main(int argc, char const *argv[])
 
     while(true) {
         string key, value;
-        cout << "Key >>";
-        cin >> key;
-        cout << "Value >>";
-        cin >> value;
+        cout << "Key >> ";
+        getline(cin, key);
+        cout << "Value >> ";
+        getline(cin, value);
         if(key == "exit" || value == "exit") {
             break;
         }
@@ -27,8 +28,8 @@ int main(int argc, char const *argv[])
 
     while(true) {
         string key;
-        cout << "Key >>";
-        cin >> key;
+        cout << "Key >> ";
+        getline(cin, key);
         if(key == "exit") {
             break;
         }
