@@ -65,7 +65,25 @@ int main(int argc, char const *argv[])
 
     cout << "Char\tASCII\tHuffman Code" << endl;
     for(int i=0; i<dict.size(); i++) {
-        cout << ((dict[i].key>=32 && dict[i].key <= 127)?dict[i].key:'*') << "\t" << (int)dict[i].key << "\t" << bitset<32>(dict[i].code) << " = " << dict[i].code << endl;
+        cout << ((dict[i].key>=32 && dict[i].key <= 127)?dict[i].key:'*') << "\t" << (int)dict[i].key << "\t" << toBinaryCode(dict[i].code) << " = " << dict[i].code << endl;
     }
     return 0;
+}
+
+char *toBinaryCode(int number) {
+    int length, num = number;
+    for(length=1; number>0; number>>=1, length++){}
+
+    char *code = new char[length+1];
+    for(int i=length-1; i>=0; i--){
+        int k = num & 1;
+        if(k == 1) {
+            code[i] = '1';
+        } else {
+            code[i] = '0';
+        }
+        num >>= 1;
+    }
+    code[length] = '\0';
+    return code;
 }
