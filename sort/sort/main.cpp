@@ -6,10 +6,12 @@
 #include <ctime>
 #include <sys/time.h>   
 #include "sort.cpp"   
+#include "heap_sort/HeapSort.h"
 
 void printTheArray(int *data, int len);
 void arrayCopy(int *, const int *, int);
 long getCurrentTime();
+void __heapsort_int(int *, int);
 
 using namespace std;
 
@@ -18,6 +20,9 @@ bool noBubble = false;
 bool noInsertion = false;
 bool noShell = false;
 
+void __heapsort_int(int *data, int length) {
+    heapSort(data, length);
+}
 
 template <class T>
 void testAlgorithm(const T *data, int dataLen, void (*func)(T *, int), string desc){
@@ -90,6 +95,8 @@ int main(int argc, char const *argv[])
     testAlgorithm(data, dataCounts, &quickSortR, "Quick sort / recursive");
 
     testAlgorithm(data, dataCounts, &quickSortI, "Quick sort / iterative");
+
+    testAlgorithm(data, dataCounts, &(heapSort<int>), "Heap sort");
 
     if(!noShell) {
         int *data6 = new int[dataCounts];
